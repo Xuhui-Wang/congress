@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Testing DOM</title>
+<script type="text/javascript">
+var xmlDoc;
+
+function loadXML(url) { 
+      if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+       xmlhttp=new XMLHttpRequest();
+   }
+ else
+  {// code for IE6, IE5
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xmlhttp.open("GET",url,false);
+  xmlhttp.send();
+  xmlDoc=xmlhttp.responseXML;
+  return xmlDoc; 
+ }
+ 
+function xmlparse() {
+	xmlDoc = loadXML("books.xml");
+	var html = "";
+	html += ("xmlDoc is loaded, ready for use");
+	html += ("<br />");
+	var books = xmlDoc.documentElement;
+	var bookArray = books.children;
+//	alert(books.innerHTML);
+    alert(bookArray.length);
+	for(var i =0; i < bookArray.length; i++) { 
+		var book = bookArray[i];
+		var bookProps = book.children;
+		html += ("<ul>");
+		for( var j = 0; j < bookProps.length; j++) {
+			var bookProp = bookProps[j];
+			if(bookProp.textContent === undefined) {
+				html += ("<li>" + bookProp.nodeName + ":" + bookProp.nodeValue + "</li>");
+			} else { 
+				html += ("<li>" + bookProp.nodeName + ":" + bookProp.textContent + "</li>"); 
+			}
+		}
+		html += ("</ul>");
+        //alert(html);
+	}
+	document.getElementById("output").innerHTML = html;
+}
+</script>
+</head>
+<body>
+<h2>This is the domtest web page using DOM children function</h2>
+<input type="button" name="submit" value="Submit Query"
+onClick="xmlparse()" />
+<div id="output">
+</div>
+<noscript>
+</body>
+</html>
